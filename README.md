@@ -1,32 +1,63 @@
 # HabitForge
 
-HabitForge is a local-first personal productivity and consistency tracker for studying, coding, projects, and personal goals.
+HabitForge is a local-first productivity dashboard for study, coding, learning, and personal routines.
 
 **Small actions. Every day.**
 
+## Overview
+
+HabitForge is built as a lightweight vanilla HTML, CSS, and JavaScript app with no backend, no database, and no dependency install step. It keeps everything local in the browser using `localStorage`, making it fast, private, and easy to use.
+
 ## Run it
 
-Open `index.html` in a modern browser. No build step, backend, or dependency installation is required.
+You can open `index.html` directly in a browser, or serve the project locally for a smoother experience:
 
-## Architecture
+```bash
+python -m http.server 8000
+```
 
-- `index.html` contains the app shell, dashboard views, forms, and accessible controls.
-- `style.css` contains the responsive layout, design tokens, light/dark themes, cards, and interaction states.
-- `script.js` owns the application state, rendering, navigation, timer, and persistence.
+Then visit `http://localhost:8000`.
 
-The app uses one `localStorage` record under `habitforge-state-v1`. Tasks and habits keep an array of ISO date keys in `completionDates`, while focus sessions retain their completion date. Rendering derives today's progress, weekly totals, and history from those dates, so a daily reset never deletes historical information.
+## Features
 
-## Streak calculation
+- Dashboard overview with progress cards and daily momentum tracking
+- Task manager with add, edit, delete, complete, search, and priority sorting
+- Habit tracker with streaks, target labels, repeat-day selection, and seven-day history
+- Focus timer for 15, 30, and 45 minute sessions
+- Statistics view with weekly completion data and consistency trends
+- Local notifications center for habit and task updates
+- Dark mode preference saved in the browser
+- Responsive desktop/mobile layout with sidebar navigation and modals
 
-The current streak counts consecutive completed dates ending today. If nothing was completed today, it can continue from yesterday, which keeps the dashboard useful before the first action of the day. The best streak scans all stored completion dates in order and finds the longest consecutive run. Habit streaks use that same calculation per habit.
+## Project structure
 
-The Never Miss Twice message checks for a habit completed before yesterday but missed yesterday. Once that habit is completed today, the message changes to a return-to-routine encouragement.
+- `index.html` — application shell, navigation, views, modal forms, and timer layout
+- `style.css` — design system, dashboard styling, responsive layout, and dark mode visuals
+- `script.js` — application state, rendering logic, task/habit logic, timer behavior, notifications, and persistence
 
-## Included V1 features
+## Local-first architecture
 
-- Date-aware tasks with edit, delete, priority, category, and completion state
-- Habits with targets, daily completion, current/best streaks, and seven-day history
-- Focus timer with 15, 30, and 45 minute sessions
-- Weekly statistics and completion bars
-- Responsive desktop sidebar and mobile navigation drawer
-- Light/dark mode preference stored locally
+The app stores its full state in a single `localStorage` key named `habitforge-state-v1`.
+
+This includes:
+
+- tasks
+- habits
+- focus sessions
+- notifications
+- user preferences
+- timer state
+
+Task and habit completion data is stored as ISO date keys (`completionDates`), which makes streak tracking, weekly charts, and daily progress easy to derive without storing a backend database.
+
+## Streak logic
+
+The current streak is calculated from consecutive completion dates ending at today. If a task or habit was not completed today, the logic can continue from yesterday so the dashboard remains meaningful before the day is over.
+
+The best streak scans all stored completion dates in order and finds the longest consecutive run. This same logic is used for habits and aggregated daily activity.
+
+The "Never Miss Twice" encouragement is triggered when a habit has a recent gap and the user has not yet returned to the routine.
+
+## Notes
+
+HabitForge intentionally keeps the app simple and portable. It is designed for personal tracking, learning routines, and small daily wins without requiring a framework or server-side infrastructure.
